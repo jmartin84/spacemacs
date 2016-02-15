@@ -248,7 +248,7 @@ layers configuration. You are free to put any user code."
   (editorconfig-mode 1)
   (editorconfig-apply)
   (global-linum-mode)
-  (set-default 'truncate-lines f)
+  (set-default 'truncate-lines nil)
   (with-eval-after-load 'linum
     (linum-relative-toggle)
     )
