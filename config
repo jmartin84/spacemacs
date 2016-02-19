@@ -99,7 +99,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(tangotango)
+   dotspacemacs-themes '(material)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -258,7 +258,7 @@ layers configuration. You are free to put any user code."
   (setq tabbar-ruler-global-tabbar t)
   (setq tabbar-ruler-popup-menu t)
   (setq tabbar-ruler-popup-toolbar t)
-  (setq tabbar-ruler-popup-scrollbar t)
+  (setq tabbar-ruler-popup-scrollbar nil)
   (tabbar-ruler-group-by-projectile-project)
   (global-set-key (kbd "C-c f") 'tabbar-ruler-forward)
   (global-set-key (kbd "C-c b") 'tabbar-ruler-backward)
