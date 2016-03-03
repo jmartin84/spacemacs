@@ -99,14 +99,14 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(material)
+   dotspacemacs-themes '(spacemacs-dark colorsarenice-dark)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolata LGC"
-                               :size 13
-                               :weight normal
+   dotspacemacs-default-font '("InputSans"
+                               :size 12
+                               :weight light
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
@@ -262,6 +262,19 @@ layers configuration. You are free to put any user code."
   (tabbar-ruler-group-by-projectile-project)
   (global-set-key (kbd "C-c f") 'tabbar-ruler-forward)
   (global-set-key (kbd "C-c b") 'tabbar-ruler-backward)
+  (global-evil-mc-mode 1)
+  (global-set-key (kbd "C-d") 'evil-mc-make-and-goto-next-match)
+  (global-set-key (kbd "C-u") 'evil-mc-k)
+  (setq indent-guide-delay 0)
+  (setq indent-guide-recursive t)
+  (setq-default truncate-lines t)
+  (setq whitespace-style (quote (face trailing tabs empty indentation space-after-tab space-before-tab tab-mark newline-mark)))
+  (setq whitespace-display-mappings
+  ;; all numbers are Unicode codepoint in decimal. try (insert-char 182 ) to see it
+  '(
+    (newline-mark 10 [8629 10]) ; 10 LINE FEED
+    (tab-mark 9 [8594 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
+    ))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -272,6 +285,12 @@ layers configuration. You are free to put any user code."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(grep-find-ignored-directories
+   (quote
+    ("bower_components" "SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build" "node_modules")))
+ '(helm-grep-ignored-directories
+   (quote
+    ("bower_components"  "build" "node_modules" "SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" ".gvfs")))
  '(paradox-github-token t)
  '(tool-bar-mode nil)
  '(transient-mark-mode (quote (only . t))))
@@ -280,6 +299,5 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Inconsolata LGC" :foundry "nil" :slant normal :weight normal :height 130 :width normal))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
