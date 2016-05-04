@@ -104,7 +104,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("InputSans"
+   dotspacemacs-default-font '("InputMono"
                                :size 12
                                :weight light
                                :width normal
@@ -236,15 +236,16 @@ values."
 It is called immediately after `dotspacemacs/init'.  You are free to put almost
 any user code here.  The exception is org related code, which should be placed
 in `dotspacemacs/user-config'."
-
-  )
+ )
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
   evil-insert-state-cursor 'bar
+  (setq helm-c-find-files-show-icons t)
   (setq neo-theme 'arrow)
+  (setq neo-dont-be-alone t)
   (editorconfig-mode 1)
   (editorconfig-apply)
   (global-linum-mode)
@@ -269,6 +270,7 @@ layers configuration. You are free to put any user code."
   (setq indent-guide-recursive t)
   (setq-default truncate-lines t)
   (setq whitespace-style (quote (face trailing tabs empty indentation space-after-tab space-before-tab tab-mark newline-mark)))
+  (global-whitespace-mode t)
   (setq whitespace-display-mappings
   ;; all numbers are Unicode codepoint in decimal. try (insert-char 182 ) to see it
   '(
@@ -277,6 +279,17 @@ layers configuration. You are free to put any user code."
     ))
   )
 
+(defun my/use-eslint-from-node-modules () (interactive)
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (file-executable-p eslint)
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+
+(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (custom-set-variables
