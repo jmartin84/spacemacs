@@ -245,7 +245,7 @@ layers configuration. You are free to put any user code."
   evil-insert-state-cursor 'bar
   (setq helm-c-find-files-show-icons t)
   (setq neo-theme 'arrow)
-  (setq neo-dont-be-alone t)
+  (setq neo-dont-be-alone '(face char))
   (editorconfig-mode 1)
   (editorconfig-apply)
   (global-linum-mode)
@@ -270,13 +270,20 @@ layers configuration. You are free to put any user code."
   (setq indent-guide-recursive t)
   (setq-default truncate-lines t)
   (setq whitespace-style (quote (face trailing tabs empty indentation space-after-tab space-before-tab tab-mark newline-mark)))
-  (global-whitespace-mode t)
+  ;; (global-whitespace-mode nil)
   (setq whitespace-display-mappings
   ;; all numbers are Unicode codepoint in decimal. try (insert-char 182 ) to see it
   '(
     (newline-mark 10 [8629 10]) ; 10 LINE FEED
     (tab-mark 9 [8594 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
     ))
+  (setq projectile-switch-project-action 'neotree-projectile-action)
+  (setq neo-vc-integration t)
+  (when neo-persist-show
+    (add-hook 'popwin:before-popup-hook
+              (lambda () (setq neo-persist-show nil)))
+    (add-hook 'popwin:after-popup-hook
+              (lambda () (setq neo-persist-show t))))
   )
 
 (defun my/use-eslint-from-node-modules () (interactive)
@@ -289,6 +296,24 @@ layers configuration. You are free to put any user code."
     (when (file-executable-p eslint)
       (setq-local flycheck-javascript-eslint-executable eslint))))
 
+(defun my/set-fly-checker-type () (interactive)
+    (when (looking-at "/.*\.(jsx|json|js)/ig" (buffer-file-name))
+      (message "setting flychecker")
+      (let* ((eslintrc (locate-dominating-file
+                          (or (buffer-file-name) default-directory)
+                          ".eslintrc"))
+            (eslintjson (locate-dominating-file
+                          (or (buffer-file-name) default-directory)
+                          ".eslintrc.json"))
+            (jshint (locate-dominating-file
+                      (or (buffer-file-name) default-directory)
+                      ".jshintrc")))
+        (cond
+          (eslintrc (flycheck-select-checker 'javascript-eslint))
+          (eslintjson (flycheck-select-checker 'javascript-eslint))
+          (jshint (flycheck-select-checker 'javascript-jshint))))))
+
+(add-hook 'flycheck-mode-hook #'my/set-fly-checker-type)
 (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -300,10 +325,10 @@ layers configuration. You are free to put any user code."
  '(column-number-mode t)
  '(grep-find-ignored-directories
    (quote
-    ("bower_components" "SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build" "node_modules")))
+    ("coverage" "bower_components" "SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build" "node_modules")))
  '(helm-grep-ignored-directories
    (quote
-    ("bower_components"  "build" "node_modules" "SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" ".gvfs")))
+    ("coverage" "bower_components"  "build" "node_modules" "SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" ".gvfs")))
  '(paradox-github-token t)
  '(tool-bar-mode nil)
  '(transient-mark-mode (quote (only . t))))
