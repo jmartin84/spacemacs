@@ -67,7 +67,7 @@ values."
    ;; This variable has no effect if Emacs is launched with the parameter
    ;; `--insecure' which forces the value of this variable to nil.
    ;; (default t)
-   dotspacemacs-elpa-https t
+   dotspacemacs-elpa-https nil
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    dotspacemacs-elpa-timeout 5
    ;; If non nil then spacemacs will check for updates at startup
@@ -277,8 +277,8 @@ layers configuration. You are free to put any user code."
     (newline-mark 10 [8629 10]) ; 10 LINE FEED
     (tab-mark 9 [8594 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
     ))
-  (setq projectile-switch-project-action 'neotree-projectile-action)
-  (setq neo-vc-integration t)
+  ;;(setq projectile-switch-project-action 'neotree-projectile-action)
+  (setq neo-vc-integration nil)
   (when neo-persist-show
     (add-hook 'popwin:before-popup-hook
               (lambda () (setq neo-persist-show nil)))
@@ -323,12 +323,13 @@ layers configuration. You are free to put any user code."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(editorconfig-exec-path "/usr/local/bin/editorconfig")
  '(grep-find-ignored-directories
    (quote
-    ("coverage" "bower_components" "SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build" "node_modules")))
+    ("map" ".tmp" "dist" "coverage" "bower_components" "SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build" "node_modules")))
  '(helm-grep-ignored-directories
    (quote
-    ("coverage" "bower_components"  "build" "node_modules" "SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" ".gvfs")))
+    ("map" ".tmp" "dist" "coverage" "bower_components" "build" "node_modules" "SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" ".gvfs")))
  '(paradox-github-token t)
  '(tool-bar-mode nil)
  '(transient-mark-mode (quote (only . t))))
