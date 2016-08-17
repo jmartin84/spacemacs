@@ -39,12 +39,14 @@ values."
      dockerfile
      themes-megapack
      yaml
+     editorconfig
+     csharp
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(editorconfig tabbar-ruler)
+   dotspacemacs-additional-packages '(tabbar-ruler protobuf-mode)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -105,10 +107,10 @@ values."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("InputMono"
-                               :size 12
+                               :size 14
                                :weight light
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -243,11 +245,12 @@ in `dotspacemacs/user-config'."
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
   evil-insert-state-cursor 'bar
+  (setq-default omnisharp-server-executable-path "/Users/justen/code/opensource/applications/omnisharp-roslyn/artifacts/publish/OmniSharp/default/netcoreapp1.0/OmniSharp")
   (setq helm-c-find-files-show-icons t)
+  (editorconfig-mode 1)
+	(editorconfig-apply)
   (setq neo-theme 'arrow)
   (setq neo-dont-be-alone '(face char))
-  (editorconfig-mode 1)
-  (editorconfig-apply)
   (global-linum-mode)
   (set-default 'truncate-lines nil)
   (with-eval-after-load 'linum
@@ -279,6 +282,7 @@ layers configuration. You are free to put any user code."
     ))
   ;;(setq projectile-switch-project-action 'neotree-projectile-action)
   (setq neo-vc-integration nil)
+  (add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-mode))
   (when neo-persist-show
     (add-hook 'popwin:before-popup-hook
               (lambda () (setq neo-persist-show nil)))
@@ -302,6 +306,9 @@ layers configuration. You are free to put any user code."
       (let* ((eslintrc (locate-dominating-file
                           (or (buffer-file-name) default-directory)
                           ".eslintrc"))
+             (eslintjson (locate-dominating-file
+                          (or (buffer-file-name) default-directory)
+                          ".eslintrc.js"))
             (eslintjson (locate-dominating-file
                           (or (buffer-file-name) default-directory)
                           ".eslintrc.json"))
@@ -312,9 +319,11 @@ layers configuration. You are free to put any user code."
           (eslintrc (flycheck-select-checker 'javascript-eslint))
           (eslintjson (flycheck-select-checker 'javascript-eslint))
           (jshint (flycheck-select-checker 'javascript-jshint))))))
-
+(defun my/file-load-hook () (interactive)
+       (whitespace-mode))
 (add-hook 'flycheck-mode-hook #'my/set-fly-checker-type)
 (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+(add-hook 'find-file-hook #'my/file-load-hook)
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (custom-set-variables
