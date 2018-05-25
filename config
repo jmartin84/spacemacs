@@ -497,6 +497,7 @@ before packages are loaded."
 
 (defun my/bootstrap-autocomplete ()
   (global-company-mode)
+  (global-set-key (kbd "C-SPC") 'company-complete)
   )
 
 (defun my/bootstrap-whitespace ()
@@ -531,15 +532,16 @@ before packages are loaded."
   (electric-indent-mode nil)
   (setq evil-insert-state-cursor 'bar)
   (set-default 'truncate-lines t)
-  (add-hook 'prog-mode-hook 'linum-mode)
   (setq ediff-window-setup-function 'ediff-setup-windows-default)
-  (with-eval-after-load 'linum
-    (linum-relative-toggle))
   (defvar just-tab-keymap (make-sparse-keymap) "Keymap for just-tab-mode")
   (define-minor-mode just-tab-mode
     "Just want the TAB key to be a TAB"
     :global t :lighter " TAB" :init-value 0 :keymap just-tab-keymap
-    (define-key just-tab-keymap (kbd "TAB") 'self-insert-command)))
+    (define-key just-tab-keymap (kbd "TAB") 'self-insert-command))
+  (global-display-line-numbers-mode)
+  (setq display-line-numbers-type 'relative)
+  (global-hl-line-mode nil)
+  )
 
 (defun my/bootstrap-font ()
   (when (window-system)
