@@ -296,7 +296,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-max-rollback-slots 5
 
    ;; If non-nil, `helm' will try to minimize the space it uses. (default nil)
-   dotspacemacs-helm-resize nil
+   dotspacemacs-helm-resize t
 
    ;; if non-nil, the helm header is hidden when there is only one source.
    ;; (default nil)
@@ -389,7 +389,7 @@ It should only modify the values of Spacemacs settings."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'relative
 
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
@@ -402,7 +402,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc…
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis nil
+   dotspacemacs-smart-closing-parenthesis t
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
@@ -416,7 +416,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
+   dotspacemacs-search-tools '("ag" "grep")
 
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
@@ -435,7 +435,7 @@ It should only modify the values of Spacemacs settings."
    ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
    ;; %Z - like %z, but including the end-of-line format
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%I@%S"
+   dotspacemacs-frame-title-format "%t@aS"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
@@ -539,9 +539,6 @@ before packages are loaded."
     "Just want the TAB key to be a TAB"
     :global t :lighter " TAB" :init-value 0 :keymap just-tab-keymap
     (define-key just-tab-keymap (kbd "TAB") 'self-insert-command))
-  (global-display-line-numbers-mode)
-  (setq display-line-numbers-type 'relative)
-  (global-hl-line-mode nil)
   (add-hook 'prog-mode-hook (electric-indent-mode nil))
   (add-hook 'text-mode-hook (electric-indent-mode nil)))
 
@@ -643,7 +640,7 @@ This function is called at the very end of Spacemacs initialization."
    ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
  '(package-selected-packages
    (quote
-    (indium websocket jbeans-theme rainbow-mode rainbow-identifiers color-identifiers-mode all-the-icons memoize helm-spotify-plus ghub let-alist spotify helm-spotify multi sublime-themes dockerfile-mode docker tablist docker-tramp clojure-snippets clj-refactor inflections edn peg cider-eval-sexp-fu cider seq queue clojure-mode fsharp-mode d-mode company-dcd ivy flycheck-dmd-dub nginx-mode omnisharp shut-up csharp-mode winum fuzzy csv-mode sql-indent rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby tide typescript-mode parinfer paredit powershell pug-mode hide-comnt uuidgen toc-org powerline spinner org org-plus-contrib org-bullets markdown-mode livid-mode skewer-mode simple-httpd link-hint json-snatcher json-reformat multiple-cursors hydra parent-mode request haml-mode gitignore-mode git-link fringe-helper git-gutter+ git-gutter pos-tip pkg-info epl flx eyebrowse evil-visual-mark-mode evil-unimpaired magit-popup evil-ediff anzu evil goto-chg highlight eshell-z dumb-jump f diminish web-completion-data dash-functional tern company column-enforce-mode bind-map bind-key yasnippet packed dash avy async auto-complete popup package-build iedit js2-mode smartparens undo-tree helm helm-core with-editor s yaml-mode flycheck projectile git-commit protobuf-mode magit xterm-color ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe use-package tagedit spacemacs-theme spaceline smooth-scrolling smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines orgit open-junk-file neotree multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative leuven-theme less-css-mode json-mode js2-refactor js-doc jade-mode info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig diff-hl define-word company-web company-tern company-statistics company-quickhelp coffee-mode clean-aindent-mode buffer-move bracketed-paste auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (evil-goggles jbeans-theme rainbow-mode rainbow-identifiers color-identifiers-mode all-the-icons memoize helm-spotify-plus ghub let-alist spotify helm-spotify multi sublime-themes dockerfile-mode docker tablist docker-tramp clojure-snippets clj-refactor inflections edn peg cider-eval-sexp-fu cider seq queue clojure-mode fsharp-mode d-mode company-dcd ivy flycheck-dmd-dub nginx-mode omnisharp shut-up csharp-mode winum fuzzy csv-mode sql-indent rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby tide typescript-mode parinfer paredit powershell pug-mode hide-comnt uuidgen toc-org powerline spinner org org-plus-contrib org-bullets markdown-mode livid-mode skewer-mode simple-httpd link-hint json-snatcher json-reformat multiple-cursors hydra parent-mode request haml-mode gitignore-mode git-link fringe-helper git-gutter+ git-gutter pos-tip pkg-info epl flx eyebrowse evil-visual-mark-mode evil-unimpaired magit-popup evil-ediff anzu evil goto-chg highlight eshell-z dumb-jump f diminish web-completion-data dash-functional tern company column-enforce-mode bind-map bind-key yasnippet packed dash avy async auto-complete popup package-build iedit js2-mode smartparens undo-tree helm helm-core with-editor s yaml-mode flycheck projectile git-commit protobuf-mode magit xterm-color ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe use-package tagedit spacemacs-theme spaceline smooth-scrolling smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines orgit open-junk-file neotree multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative leuven-theme less-css-mode json-mode js2-refactor js-doc jade-mode info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig diff-hl define-word company-web company-tern company-statistics company-quickhelp coffee-mode clean-aindent-mode buffer-move bracketed-paste auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
