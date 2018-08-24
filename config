@@ -40,6 +40,7 @@ This function should only modify configuration layer settings."
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      ;;treemacs
+     lsp
      multi-edit
      neotree
      clojure
@@ -512,7 +513,27 @@ before packages are loaded."
   (global-company-mode)
   (global-set-key (kbd "C-SPC") 'company-complete)
   (setq company-idle-delay nil)
-  )
+  (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
+  (add-hook 'js3-mode-hook #'lsp-javascript-typescript-enable) ;; for js3-mode support
+  (add-hook 'typescript-mode-hook #'lsp-javascript-typescript-enable) ;; for typescript support
+  (add-hook 'rjsx-mode #'lsp-javascript-typescript-enable) ;; for rjsx-mode support
+
+  (defun my-company-transformer (candidates)
+           (let ((completion-ignore-case t))
+                    (all-completions (company-grab-symbol) candidates)))
+
+    (defun my-js-hook nil
+           (make-local-variable 'company-transformers)
+           (push 'my-company-transformer company-transformers))
+
+   (add-hook 'js-mode-hook 'my-js-hook)
+
+   (setq lsp-ui-doc-enable nil)
+   (setq lsp-ui-peek-enable nil)
+   (setq lsp-ui-sideline-enable t)
+   (setq lsp-ui-imenu-enable nil)
+   (setq lsp-ui-flycheck-enable t)
+   (setq lsp-ui-sideline-show-hover nil))
 
 (defun my/bootstrap-whitespace ()
   (setq whitespace-style (quote (
@@ -655,7 +676,7 @@ This function is called at the very end of Spacemacs initialization."
    ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
  '(package-selected-packages
    (quote
-    (rjsx-mode impatient-mode jbeans-theme rainbow-mode rainbow-identifiers color-identifiers-mode all-the-icons memoize helm-spotify-plus ghub let-alist spotify helm-spotify multi sublime-themes dockerfile-mode docker tablist docker-tramp clojure-snippets clj-refactor inflections edn peg cider-eval-sexp-fu cider seq queue clojure-mode fsharp-mode d-mode company-dcd ivy flycheck-dmd-dub nginx-mode omnisharp shut-up csharp-mode winum fuzzy csv-mode sql-indent rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby tide typescript-mode parinfer paredit powershell pug-mode hide-comnt uuidgen toc-org powerline spinner org org-plus-contrib org-bullets markdown-mode livid-mode skewer-mode simple-httpd link-hint json-snatcher json-reformat multiple-cursors hydra parent-mode request haml-mode gitignore-mode git-link fringe-helper git-gutter+ git-gutter pos-tip pkg-info epl flx eyebrowse evil-visual-mark-mode evil-unimpaired magit-popup evil-ediff anzu evil goto-chg highlight eshell-z dumb-jump f diminish web-completion-data dash-functional tern company column-enforce-mode bind-map bind-key yasnippet packed dash avy async auto-complete popup package-build iedit js2-mode smartparens undo-tree helm helm-core with-editor s yaml-mode flycheck projectile git-commit protobuf-mode magit xterm-color ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe use-package tagedit spacemacs-theme spaceline smooth-scrolling smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines orgit open-junk-file neotree multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative leuven-theme less-css-mode json-mode js2-refactor js-doc jade-mode info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig diff-hl define-word company-web company-tern company-statistics company-quickhelp coffee-mode clean-aindent-mode buffer-move bracketed-paste auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (lsp-ui lsp-javascript-typescript company-lsp lsp-mode jbeans-theme rainbow-mode rainbow-identifiers color-identifiers-mode all-the-icons memoize helm-spotify-plus ghub let-alist spotify helm-spotify multi sublime-themes dockerfile-mode docker tablist docker-tramp clojure-snippets clj-refactor inflections edn peg cider-eval-sexp-fu cider seq queue clojure-mode fsharp-mode d-mode company-dcd ivy flycheck-dmd-dub nginx-mode omnisharp shut-up csharp-mode winum fuzzy csv-mode sql-indent rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby tide typescript-mode parinfer paredit powershell pug-mode hide-comnt uuidgen toc-org powerline spinner org org-plus-contrib org-bullets markdown-mode livid-mode skewer-mode simple-httpd link-hint json-snatcher json-reformat multiple-cursors hydra parent-mode request haml-mode gitignore-mode git-link fringe-helper git-gutter+ git-gutter pos-tip pkg-info epl flx eyebrowse evil-visual-mark-mode evil-unimpaired magit-popup evil-ediff anzu evil goto-chg highlight eshell-z dumb-jump f diminish web-completion-data dash-functional tern company column-enforce-mode bind-map bind-key yasnippet packed dash avy async auto-complete popup package-build iedit js2-mode smartparens undo-tree helm helm-core with-editor s yaml-mode flycheck projectile git-commit protobuf-mode magit xterm-color ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe use-package tagedit spacemacs-theme spaceline smooth-scrolling smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines orgit open-junk-file neotree multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative leuven-theme less-css-mode json-mode js2-refactor js-doc jade-mode info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig diff-hl define-word company-web company-tern company-statistics company-quickhelp coffee-mode clean-aindent-mode buffer-move bracketed-paste auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
