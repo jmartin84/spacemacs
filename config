@@ -487,8 +487,8 @@ before packages are loaded."
   (my/bootstrap-js2-mode)
   (my/bootstrap-web-mode)
   (my/bootstrap-clojure)
+  (my/bootstrap-whitespace)
   (my/bootstrap-font))
-  ;;(my/bootstrap-treemacs))
 
 (defun my/bootstrap-treemacs () 
   (treemacs
@@ -535,26 +535,21 @@ before packages are loaded."
    (setq lsp-ui-flycheck-enable t)
    (setq lsp-ui-sideline-show-hover nil))
 
-(defun my/bootstrap-whitespace ()
+(defun my/bootstrap-whitespace () (interactive)
   (setq whitespace-style (quote (
                                  face
                                  trailing
                                  tabs
                                  empty
                                  indentation
-                                 space-after-tab
-                                 space-before-tab
                                  tab-mark
                                  )))
 
   (setq whitespace-display-mappings
-        ;; all numbers are Unicode codepoint in decimal. try (insert-char 182 ) to see it
         '(
           (face)
           (newline)
           (empty)
-          (trailing)
-          (space-mark 32 [183] [46])
           (newline-mark 10 [8629 10]) ; 10 LINE FEED
           (tab-mark 9 [8594 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
           ))
@@ -683,5 +678,6 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(whitespace-tab ((t (:foreground "gray23")))))
 )
